@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { getButtons, BACKSPACE , Numpad} from "@point_of_sale/app/generic_components/numpad/numpad";
+import { getButtons, BACKSPACE , DEFAULT_LAST_ROW} from "@point_of_sale/app/generic_components/numpad/numpad";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 

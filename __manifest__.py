@@ -6,7 +6,7 @@
     "license": "LGPL-3",
     "depends": ["point_of_sale"],
     'assets': {
-        'web.assets_backend': [
+        'point_of_sale.assets': [
             'kedai_numpad/static/src/app/generic_components/numpad/numpad.js',
         ],
     },

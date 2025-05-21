@@ -20,4 +20,28 @@ patch(PaymentScreen.prototype, {
             class: `${colorClassMap[button.value] || ""}`,
         }));
     },
+
+    // Override handleNumpadButtonClick supaya tombol custom bisa langsung tambah amount payment line
+    handleNumpadButtonClick(button) {
+        const selectedPaymentLine = this.currentOrder.get_selected_paymentline();
+        if (!selectedPaymentLine) {
+            return;
+        }
+
+        const value = button.value;
+
+        if (value === "+10000" || value === "+20000" || value === "+50000") {
+            // Ambil current amount, tambahkan nominal tombol
+            const currentAmount = selectedPaymentLine.amount || 0;
+            const increment = parseInt(value.replace("+", ""), 10);
+            const newAmount = currentAmount + increment;
+            selectedPaymentLine.set_amount(newAmount);
+            // Reset buffer supaya value langsung berubah
+            this.numberBuffer.reset();
+            this.numberBuffer.set(newAmount.toString());
+        } else {
+            // Panggil original method utk tombol lain (backspace, -, dll)
+            this._super(button);
+        }
+    },
 });

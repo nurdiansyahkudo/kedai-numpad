@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { getButtons, BACKSPACE } from "@point_of_sale/static/src/app/generic_components/numpad/numpad";
+import { getButtons, BACKSPACE } from "@point_of_sale/app/generic_components/numpad/numpad";
 
 // Fungsi override
 export function customEnhancedButtons() {

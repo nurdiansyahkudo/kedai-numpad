@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { PaymentScreen } from "@point_of_sale/static/src/app/screens/payment_screen/payment_screen";
+import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { customEnhancedButtons } from "../../generic_components/numpad/custom_numpad";
 
 patch(PaymentScreen.prototype, {

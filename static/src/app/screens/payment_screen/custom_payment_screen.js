@@ -20,4 +20,26 @@ patch(PaymentScreen.prototype, {
             class: `${colorClassMap[button.value] || ""}`,
         }));
     },
+
+    // Override / extend method click tombol numpad
+    async _onNumpadButtonClick(buttonValue) {
+        console.log("Clicked numpad button:", buttonValue);
+
+        // Tangani tombol custom dulu
+        if (buttonValue === "+10000" || buttonValue === "+20000" || buttonValue === "+50000") {
+            // Contoh: tambahkan nominal ke amount due
+            this.state.amount += parseInt(buttonValue.replace("+", ""));
+            this.render();  // Render ulang tampilan pembayaran
+            return;
+        }
+        if (buttonValue === "-") {
+            // Toggle minus/plus misalnya
+            this.state.amount = -this.state.amount;
+            this.render();
+            return;
+        }
+
+        // Kalau bukan tombol custom, panggil method asli agar tombol default tetap jalan
+        return this._super(buttonValue);
+    },
 });

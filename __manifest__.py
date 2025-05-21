@@ -8,7 +8,7 @@
     'assets': {
         "point_of_sale._assets_pos": [
             "kedai_numpad/static/src/app/generic_components/numpad/custom_numpad.js",
-            "kedai_numpad/static/src/app/screens/payment_screen/custom_payment_screen.js",
+            # "kedai_numpad/static/src/app/screens/payment_screen/custom_payment_screen.js",
         ],
     },
     "installable": True,

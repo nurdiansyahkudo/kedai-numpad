@@ -6,8 +6,9 @@
     "license": "LGPL-3",
     "depends": ["point_of_sale"],
     'assets': {
-        'point_of_sale.assets': [
-            'kedai_numpad/static/src/app/generic_components/numpad/numpad.js',
+        "point_of_sale._assets_pos": [
+            "custom_pos_numpad/static/src/js/custom_numpad.js",
+            "custom_pos_numpad/static/src/js/custom_payment_screen.js",
         ],
     },
     "installable": True,

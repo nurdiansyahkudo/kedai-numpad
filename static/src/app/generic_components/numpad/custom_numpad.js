@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-import { getButtons, BACKSPACE } from "@point_of_sale/app/generic_components/numpad/numpad";
+import { getButtons, BACKSPACE , Numpad} from "@point_of_sale/app/generic_components/numpad/numpad";
+import { patch } from "@web/core/utils/patch";
+import { useService } from "@web/core/utils/hooks";
 
 // Fungsi override
 export function customEnhancedButtons() {
@@ -15,3 +17,22 @@ export function customEnhancedButtons() {
         BACKSPACE,
     ]);
 }
+
+patch(Numpad.prototype, {
+    setup() {
+        // Pakai default props onClick atau service number_buffer
+        if (!this.props.onClick) {
+            this.numberBuffer = useService("number_buffer");
+            this.onClick = (buttonValue) => {
+                console.log("Numpad button clicked (default):", buttonValue);
+                this.numberBuffer.sendKey(buttonValue);
+            };
+        } else {
+            // Jika onClick props diberikan, pakai itu
+            this.onClick = (buttonValue) => {
+                console.log("Numpad button clicked (prop):", buttonValue);
+                this.props.onClick(buttonValue);
+            };
+        }
+    },
+});

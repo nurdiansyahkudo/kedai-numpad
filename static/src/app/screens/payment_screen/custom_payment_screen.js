@@ -7,7 +7,7 @@ import { customEnhancedButtons } from "../../generic_components/numpad/custom_nu
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
         const colorClassMap = {
-            ".": "o_colorlist_item_color_transparent_6",
+            [this.env.services.localization.decimalPoint]: "o_colorlist_item_color_transparent_6",
             Backspace: "o_colorlist_item_color_transparent_1",
             "+10000": "o_colorlist_item_color_transparent_10",
             "+20000": "o_colorlist_item_color_transparent_10",

@@ -7,8 +7,8 @@
     "depends": ["point_of_sale"],
     'assets': {
         "point_of_sale._assets_pos": [
-            "custom_pos_numpad/static/src/app/generic_components/numpad/custom_numpad.js",
-            "custom_pos_numpad/static/src/screen/payment_screen/custom_payment_screen.js",
+            "kedai_numpad/static/src/app/generic_components/numpad/custom_numpad.js",
+            "kedai_numpad/static/src/app/screen/payment_screen/custom_payment_screen.js",
         ],
     },
     "installable": True,

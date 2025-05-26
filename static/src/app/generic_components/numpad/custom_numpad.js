@@ -17,14 +17,14 @@ patch(NumpadComp, {
     },
 });
 
-// 2. Override perilaku klik tombol
+// Override logika klik tombol
 patch(NumpadComp.Numpad.prototype, {
     setup() {
         super.setup?.();
         const isNominalButton = (val) => ["10000", "20000", "50000"].includes(val);
         this.numberBuffer = useService("number_buffer");
         const pos = useService("pos");
-        const paymentScreen = this.__owl__.parent.component; // access parent PaymentScreen
+        const paymentScreen = this.__owl__.parent.component;
 
         this.onClick = (buttonValue) => {
             console.log("Clicked:", buttonValue);
@@ -34,13 +34,15 @@ patch(NumpadComp.Numpad.prototype, {
                 const paymentLine = order?.get_selected_paymentline?.();
 
                 if (paymentLine) {
-                    const amount = parseFloat(buttonValue);
-                    paymentLine.set_amount(amount);
-                    this.numberBuffer.set(buttonValue);
+                    const currentAmount = paymentLine.amount || 0;
+                    const increment = parseFloat(buttonValue);
+                    const newAmount = currentAmount + increment;
 
-                    // ✅ trigger PaymentScreen update
+                    paymentLine.set_amount(newAmount);
+                    this.numberBuffer.set(newAmount.toString());
+
                     if (typeof paymentScreen.updateSelectedPaymentline === "function") {
-                        paymentScreen.updateSelectedPaymentline(amount);
+                        paymentScreen.updateSelectedPaymentline(newAmount);
                     }
                 }
             } else {
@@ -49,4 +51,3 @@ patch(NumpadComp.Numpad.prototype, {
         };
     },
 });
-

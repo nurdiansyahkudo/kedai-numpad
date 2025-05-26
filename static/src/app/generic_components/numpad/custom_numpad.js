@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
+import { useService } from "@web/core/utils/hooks";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 
 // 1. Override tombol
@@ -20,26 +21,32 @@ patch(NumpadComp, {
 patch(NumpadComp.Numpad.prototype, {
     setup() {
         super.setup?.();
-
         const isNominalButton = (val) => ["10000", "20000", "50000"].includes(val);
+        this.numberBuffer = useService("number_buffer");
+        const pos = useService("pos");
+        const paymentScreen = this.__owl__.parent.component; // access parent PaymentScreen
 
-        if (!this.props.onClick) {
-            this.numberBuffer = this.env.services.number_buffer;
-            this.pos = this.env.services.pos;
+        this.onClick = (buttonValue) => {
+            console.log("Clicked:", buttonValue);
 
-            this.onClick = (buttonValue) => {
-                console.log("Clicked:", buttonValue);
+            if (isNominalButton(buttonValue)) {
+                const order = pos.get_order?.();
+                const paymentLine = order?.get_selected_paymentline?.();
 
-                if (isNominalButton(buttonValue)) {
-                    const paymentLine = this.pos.get_order().get_selected_paymentline();
-                    if (paymentLine) {
-                        paymentLine.set_amount(parseFloat(buttonValue));
-                        this.numberBuffer.set(buttonValue);
+                if (paymentLine) {
+                    const amount = parseFloat(buttonValue);
+                    paymentLine.set_amount(amount);
+                    this.numberBuffer.set(buttonValue);
+
+                    // ✅ trigger PaymentScreen update
+                    if (typeof paymentScreen.updateSelectedPaymentline === "function") {
+                        paymentScreen.updateSelectedPaymentline(amount);
                     }
-                } else {
-                    this.numberBuffer.sendKey(buttonValue);
                 }
-            };
-        }
+            } else {
+                this.numberBuffer.sendKey(buttonValue);
+            }
+        };
     },
 });
+

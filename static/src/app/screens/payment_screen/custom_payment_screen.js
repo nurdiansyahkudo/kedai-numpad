@@ -17,7 +17,7 @@ patch(PaymentScreen.prototype, {
 
         return enhancedButtons().map((button) => ({
             ...button,
-            class: colorClassMap[button.value] || "",
+            class: `${colorClassMap[button.value] || ""}`,
         }));
     },
 });

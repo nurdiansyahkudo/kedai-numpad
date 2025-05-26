@@ -1,15 +1,17 @@
 /** @odoo-module **/
 
-import { getButtons, BACKSPACE , DEFAULT_LAST_ROW} from "@point_of_sale/app/generic_components/numpad/numpad";
 import { patch } from "@web/core/utils/patch";
-import { useService } from "@web/core/utils/hooks";
+import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 
-// Fungsi override
-export function customEnhancedButtons() {
-    return getButtons(DEFAULT_LAST_ROW, [
-        { value: "+10000" },
-        { value: "+20000" },
-        { value: "+50000" },
-        BACKSPACE,
-    ]);
-}
+// override enhancedButtons
+patch(NumpadComp, {
+    enhancedButtons() {
+        const customRightColumn = [
+            { value: "10000", text: "10.000" },
+            { value: "20000", text: "20.000" },
+            { value: "50000", text: "50.000" },
+            NumpadComp.BACKSPACE,
+        ];
+        return NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
+    },
+});

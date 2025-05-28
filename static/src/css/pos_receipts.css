@@ -1,8 +1,9 @@
 /* Lebar dan font utama diperbesar */
 .pos-receipt-print {
-    width: 100%;
+    width: 580px;
     font-size: 38px;
     color: #000000;
+    margin: 0 auto 10px auto;
 }
 
 /* Logo dipusatkan dan diperbesar */

@@ -1,55 +1,34 @@
-/* pos_receipt.css */
+/* Adjust for A7 print size (typically 74x105mm or ~280x397px at 96 DPI) */
+@media print {
+    .pos-receipt-print {
+        width: 280px; /* Ideal for A7 */
+        font-size: 30px; /* Larger for readability */
+        margin: 0 auto;
+    }
 
-.pos-receipt-print {
-    width: 100%;
-    max-width: 80mm;
-    font-size: 32px;
-    color: #000000;
-    margin: 0 auto;
-    padding: 0;
-}
+    .pos-receipt {
+        width: 100%;
+        font-size: 95%;
+    }
 
-.pos-receipt {
-    padding: 0.5em;
-    margin: 0;
-}
+    .pos-receipt .pos-receipt-right-align {
+        float: none;
+        justify-content: space-between;
+        width: 100%;
+    }
 
-.pos-receipt .pos-receipt-amount,
-.pos-receipt .pos-receipt-title,
-.pos-receipt .pos-receipt-header {
-    font-size: 140%;
-}
+    .pos-receipt .pos-receipt-amount,
+    .pos-receipt .pos-receipt-title,
+    .pos-receipt .pos-receipt-header,
+    .pos-payment-terminal-receipt {
+        font-size: 110%;
+    }
 
-.pos-receipt .pos-receipt-logo {
-    width: 80%;
-    max-width: 100%;
-    display: block;
-    margin: 0.5em auto;
-}
+    .responsive-price {
+        width: 100%;
+    }
 
-.customer-note {
-    padding: 0.5em !important;
-    margin: 0.5em 0 !important;
-    font-size: 90%;
-}
-
-.pos-payment-terminal-receipt {
-    font-size: 90%;
-}
-
-.pos-receipt .pos-receipt-order-data {
-    font-size: 90%;
-    margin-bottom: 0.3em;
-}
-
-.pos-receipt .pos-receipt-amount {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.pos-receipt-right-align {
-    margin-left: auto;
-    text-align: right;
+    .pos-receipt .pos-receipt-logo {
+        max-width: 100%;
+    }
 }

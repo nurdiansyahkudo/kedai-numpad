@@ -1,62 +1,131 @@
-@media print {
-    @page {
-        size: 105mm 148mm;
-        margin: 0;
-    }
+/* Lebar dan font utama diperbesar */
+.pos-receipt-print {
+    width: 100%;
+    font-size: 38px;
+    color: #000000;
+}
 
-    body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+/* Logo dipusatkan dan diperbesar */
+.pos-receipt .pos-receipt-logo {
+    width: 80%;
+    display: block;
+    margin: 0 auto 10px auto;
+}
 
-    .pos-receipt-print {
-        width: 100%;
-        max-width: 105mm;
-        font-size: 38px;
-        margin: 0 auto;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        box-sizing: border-box;
-    }
+/* QR code tetap di tengah */
+.pos-receipt .pos-receipt-qrcode {
+    display: block;
+    margin: 10px auto;
+}
 
-    .pos-receipt {
-        width: 100%;
-        max-width: 105mm;
-        padding: 1em;
-        margin: 0 auto;
-        box-sizing: border-box;
-        background: white;
-    }
+/* Posisi kanan tetap fleksibel */
+.pos-receipt .pos-receipt-right-align {
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+}
 
-    .pos-receipt .pos-receipt-amount,
-    .pos-receipt .pos-receipt-title,
-    .pos-receipt .pos-receipt-header {
-        font-size: 150%;
-    }
+/* Jarak elemen pajak */
+.pos-receipt .pos-receipt-right-align .tax-letter {
+    margin-left: 0.5em;
+}
 
-    .pos-receipt .pos-receipt-logo {
-        width: 70%;
-        margin: 0.5em auto;
-    }
+/* Teks tengah */
+.pos-receipt .pos-receipt-center-align {
+    text-align: center;
+}
 
-    .pos-receipt .pos-receipt-amount {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+/* Padding kiri tetap */
+.pos-receipt .pos-receipt-left-padding {
+    padding-left: 2em;
+}
 
-    .customer-note,
-    .pos-receipt-order-data,
-    .pos-payment-terminal-receipt {
-        font-size: 100%;
-    }
+/* Informasi kontak diperbesar */
+.pos-receipt .pos-receipt-contact {
+    text-align: center;
+    font-size: 90%;
+}
 
-    .pos-receipt-right-align {
-        float: none;
-        margin-left: auto;
-        text-align: right;
-        flex: 1;
-    }
+/* Informasi order diperbesar */
+.pos-receipt .pos-receipt-order-data {
+    text-align: center;
+    font-size: 90%;
+}
+
+/* Total amount diperjelas */
+.pos-receipt .pos-receipt-amount {
+    font-size: 135%;
+    padding-left: 4em;
+    font-weight: bold;
+}
+
+/* Judul diperbesar */
+.pos-receipt .pos-receipt-title {
+    font-weight: bold;
+    font-size: 135%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Header perusahaan */
+.pos-receipt .pos-receipt-header {
+    font-size: 140%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Indikasi pembatalan */
+.pos-receipt .pos-order-receipt-cancel {
+    color: red;
+}
+
+/* Catatan pelanggan */
+.pos-receipt .pos-receipt-customer-note {
+    word-break: break-word;
+    font-size: 90%;
+}
+
+/* Terminal payment style */
+.pos-payment-terminal-receipt {
+    text-align: center;
+    font-size: 90%;
+}
+
+/* Warisan font */
+.pos-payment-terminal-receipt pre {
+    font-family: inherit;
+}
+
+/* Flex harga responsif */
+.responsive-price {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.responsive-price > .pos-receipt-right-align {
+    margin-left: auto;
+}
+
+/* Grid pajak tetap */
+.pos-receipt .pos-receipt-taxes {
+    display: grid;
+    grid-template-columns: min-content min-content auto auto auto;
+    width: 100%;
+    justify-items: end;
+}
+
+/* Arah orderlines tetap kiri ke kanan */
+.pos-receipt .orderlines {
+    direction: ltr;
+}
+
+/* Tambahan: padding dan margin umum */
+.pos-receipt {
+    padding: 10px;
+}
+
+.pos-receipt li {
+    margin: 4px 0;
 }

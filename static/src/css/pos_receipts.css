@@ -1,7 +1,7 @@
 @media print {
     @page {
-        size: 105mm 148mm; /* ISO A6 Portrait */
-        margin: 0;          /* Hilangkan margin print */
+        size: 105mm 148mm;
+        margin: 0;
     }
 
     body {
@@ -12,23 +12,28 @@
 
     .pos-receipt-print {
         width: 100%;
-        max-width: 105mm;  /* Sesuaikan dengan kertas A6 */
-        font-size: 34px;   /* Lebih besar karena ruang lebih luas */
+        max-width: 105mm;
+        font-size: 38px;
         margin: 0 auto;
         padding: 0;
+        display: flex;
+        justify-content: center;
         box-sizing: border-box;
     }
 
     .pos-receipt {
-        padding: 0.5em;
-        margin: 0;
-        font-size: 95%;
+        width: 100%;
+        max-width: 105mm;
+        padding: 1em;
+        margin: 0 auto;
+        box-sizing: border-box;
+        background: white;
     }
 
     .pos-receipt .pos-receipt-amount,
     .pos-receipt .pos-receipt-title,
     .pos-receipt .pos-receipt-header {
-        font-size: 140%;
+        font-size: 150%;
     }
 
     .pos-receipt .pos-receipt-logo {
@@ -45,10 +50,11 @@
     .customer-note,
     .pos-receipt-order-data,
     .pos-payment-terminal-receipt {
-        font-size: 95%;
+        font-size: 100%;
     }
 
     .pos-receipt-right-align {
+        float: none;
         margin-left: auto;
         text-align: right;
         flex: 1;

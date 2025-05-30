@@ -1,20 +1,23 @@
-/* Main layout wrapper */
+/* ===============================
+   Odoo POS Receipt CSS Override
+   For Thermal Printer 58mm (203px)
+   =============================== */
+
 .pos-receipt-print {
     width: 100%;
+    max-width: 203px;
     font-size: 14px;
-    color: #000000;
-    box-sizing: border-box;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
-/* Force page to 58mm */
 @media print {
     @page {
         size: 58mm auto;
         margin: 0;
     }
 
-    body, html {
+    html, body {
         width: 58mm;
         margin: 0;
         padding: 0;
@@ -22,60 +25,62 @@
 
     .pos-receipt-print {
         width: 100%;
-        font-size: 14px;
+        max-width: 100%;
     }
 }
 
-/* Layout corrections */
-.pos-receipt .pos-receipt-right-align {
-    float: right;
+/* ========== Anti Overflow Fixes ========== */
+.pos-receipt *,
+.pos-receipt *::before,
+.pos-receipt *::after {
+    box-sizing: border-box;
+    word-break: break-word;
+    white-space: normal;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.pos-receipt .d-flex {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.pos-receipt .pos-receipt-center-align,
-.pos-receipt .pos-receipt-contact,
-.pos-receipt .pos-receipt-order-data {
-    text-align: center;
+.pos-receipt .pos-receipt-right-align {
+    margin-left: auto;
+    text-align: right;
+    max-width: 100%;
 }
 
-.pos-receipt .pos-receipt-left-padding {
-    padding-left: 1em;
+.pos-receipt .pos-receipt-amount {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
+.pos-receipt .receipt-total,
+.pos-receipt .receipt-to-pay,
+.pos-receipt .receipt-rounding,
+.pos-receipt .receipt-change {
+    padding: 0.25em 0;
+}
+
+.pos-receipt .paymentlines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}  
+
+/* Logo and QR responsiveness */
 .pos-receipt .pos-receipt-logo,
 .pos-receipt .pos-receipt-qrcode {
     display: block;
     margin: 0 auto;
     max-width: 80%;
+    height: auto;
 }
 
-.pos-receipt .pos-receipt-amount,
-.pos-receipt .pos-receipt-title,
-.pos-receipt .pos-receipt-header {
-    font-weight: bold;
-    font-size: 110%;
-    text-align: center;
-}
-
-.pos-payment-terminal-receipt pre {
-    font-family: inherit;
-}
-
-.responsive-price {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.responsive-price > .pos-receipt-right-align {
-    margin-left: auto;
-}
-
-.pos-receipt .pos-receipt-taxes {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Orderlines direction fix */
 .pos-receipt .orderlines {
     direction: ltr;
 }

@@ -13,7 +13,7 @@ patch(PaymentScreen.prototype, {
             "20000": "o_colorlist_item_color_transparent_10",
             "50000": "o_colorlist_item_color_transparent_10",
             "Backspace": "o_colorlist_item_color_transparent_1",
-            ".": "o_colorlist_item_color_transparent_6", // localization.decimalPoint
+            ".": "o_colorlist_item_color_transparent_6",
             "-": "o_colorlist_item_color_transparent_3",
         };
 
@@ -23,6 +23,7 @@ patch(PaymentScreen.prototype, {
             { value: "50000", text: "50.000" },
             NumpadComp.BACKSPACE,
         ];
+
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
         return buttons.map((button) => ({
@@ -36,15 +37,16 @@ patch(PaymentScreen.prototype, {
 patch(NumpadComp.Numpad.prototype, {
     setup() {
         super.setup?.();
+        const originalOnClick = this.onClick?.bind(this); // Simpan onClick asli
         this.numberBuffer = useService("number_buffer");
         const pos = useService("pos");
 
         const isNominalButton = (val) => ["10000", "20000", "50000"].includes(val);
 
         this.onClick = (buttonValue) => {
-            const screenComponent = this.__owl__.parent.component;
+            const screenComponent = this.__owl__?.parent?.component;
 
-            // Hanya aktif jika di PaymentScreen
+            // 🟢 Jika di PaymentScreen dan tombol nominal
             if (screenComponent instanceof PaymentScreen && isNominalButton(buttonValue)) {
                 const order = pos.get_order?.();
                 const paymentLine = order?.get_selected_paymentline?.();
@@ -60,7 +62,8 @@ patch(NumpadComp.Numpad.prototype, {
                     }
                 }
             } else {
-                this.numberBuffer.sendKey(buttonValue);
+                //  Jalankan logika default untuk tombol lainnya
+                originalOnClick?.(buttonValue);
             }
         };
     },

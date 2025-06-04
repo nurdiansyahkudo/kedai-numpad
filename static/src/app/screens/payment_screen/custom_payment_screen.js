@@ -5,7 +5,7 @@ import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 import { useService } from "@web/core/utils/hooks";
 
-// --- 1. Patch tombol khusus PaymentScreen ---
+// 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
         const colorClassMap = {
@@ -31,40 +31,28 @@ patch(PaymentScreen.prototype, {
             class: `${colorClassMap[button.value] || ""}`,
         }));
     },
-});
 
-// --- 2. Patch logika klik tombol khusus hanya untuk PaymentScreen ---
-patch(NumpadComp.Numpad.prototype, {
-    setup() {
-        super.setup?.();
-        const originalOnClick = this.onClick?.bind(this); // Simpan onClick asli
-        this.numberBuffer = useService("number_buffer");
-        const pos = useService("pos");
+    // 2. Tangani klik tombol nominal di PaymentScreen secara khusus
+    onNumpadClick(buttonValue) {
+        const isNominal = ["10000", "20000", "50000"].includes(buttonValue);
+        const order = this.pos.get_order();
 
-        const isNominalButton = (val) => ["10000", "20000", "50000"].includes(val);
+        if (isNominal) {
+            const paymentLine = order?.get_selected_paymentline();
+            if (paymentLine) {
+                const currentAmount = paymentLine.amount || 0;
+                const increment = parseFloat(buttonValue);
+                const newAmount = currentAmount + increment;
+                paymentLine.set_amount(newAmount);
+                this.numberBuffer.set(newAmount.toString());
 
-        this.onClick = (buttonValue) => {
-            const screenComponent = this.__owl__?.parent?.component;
-
-            // 🟢 Jika di PaymentScreen dan tombol nominal
-            if (screenComponent instanceof PaymentScreen && isNominalButton(buttonValue)) {
-                const order = pos.get_order?.();
-                const paymentLine = order?.get_selected_paymentline?.();
-                if (paymentLine) {
-                    const currentAmount = paymentLine.amount || 0;
-                    const increment = parseFloat(buttonValue);
-                    const newAmount = currentAmount + increment;
-                    paymentLine.set_amount(newAmount);
-                    this.numberBuffer.set(newAmount.toString());
-
-                    if (typeof screenComponent.updateSelectedPaymentline === "function") {
-                        screenComponent.updateSelectedPaymentline(newAmount);
-                    }
+                if (typeof this.updateSelectedPaymentline === "function") {
+                    this.updateSelectedPaymentline(newAmount);
                 }
-            } else {
-                //  Jalankan logika default untuk tombol lainnya
-                originalOnClick?.(buttonValue);
             }
-        };
+        } else {
+            // Default handler untuk Backspace, -, dan .
+            this.numberBuffer.sendKey(buttonValue);
+        }
     },
 });

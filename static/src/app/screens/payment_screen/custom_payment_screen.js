@@ -7,9 +7,9 @@ import { useService } from "@web/core/utils/hooks";
 
 // 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
-    setup() {
-        super.setup();
-
+    getNumpadButtons() {
+        console.log("getNumpadButton called");
+        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -26,24 +26,18 @@ patch(PaymentScreen.prototype, {
             NumpadComp.BACKSPACE,
         ];
 
-        const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn).map(
-            (button) => ({
-                ...button,
-                class: `${colorClassMap[button.value] || ""}`,
-            })
-        );
+        const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
-        this.numpadProps = {
-            ...this.numpadProps,
-            buttons,
-            onNumpadClick: this.onNumpadClick.bind(this),
-        };
+        return buttons.map((button) => ({
+            ...button,
+            class: `${colorClassMap[button.value] || ""}`,
+        }));
     },
 
     // 2. Tangani klik tombol nominal di PaymentScreen secara khusus
     onNumpadClick(buttonValue) {
         console.log("Clicked button:", buttonValue);
-
+        
         const isNominal = ["10000", "20000", "50000"].includes(buttonValue);
         const order = this.pos.get_order();
 

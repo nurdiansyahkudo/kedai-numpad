@@ -9,14 +9,6 @@ import { useService } from "@web/core/utils/hooks";
 patch(PaymentScreen.prototype, {
     setup() {
         super.setup();
-        this.numpadProps = {
-            ...this.numpadProps,
-            onNumpadClick: this.onNumpadClick.bind(this),
-        };
-    },
-
-    getNumpadButtons() {
-        console.log("getNumpadButton called");
 
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
@@ -34,12 +26,18 @@ patch(PaymentScreen.prototype, {
             NumpadComp.BACKSPACE,
         ];
 
-        const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
+        const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn).map(
+            (button) => ({
+                ...button,
+                class: `${colorClassMap[button.value] || ""}`,
+            })
+        );
 
-        return buttons.map((button) => ({
-            ...button,
-            class: `${colorClassMap[button.value] || ""}`,
-        }));
+        this.numpadProps = {
+            ...this.numpadProps,
+            buttons,
+            onNumpadClick: this.onNumpadClick.bind(this),
+        };
     },
 
     // 2. Tangani klik tombol nominal di PaymentScreen secara khusus

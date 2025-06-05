@@ -4,11 +4,8 @@ import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 
-// Patch PaymentScreen only
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
-        console.log("getNumpadButton called");
-        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -22,14 +19,14 @@ patch(PaymentScreen.prototype, {
             { value: "10000", text: "10.000" },
             { value: "20000", text: "20.000" },
             { value: "50000", text: "50.000" },
-            NumpadComp.BACKSPACE,
+            { value: "Backspace", text: "←" },
         ];
 
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
         return buttons.map((button) => ({
             ...button,
-            class: `${colorClassMap[button.value] || ""}`,
+            class: colorClassMap[button.value] || "",
             onClick: () => this.onNumpadClick(button.value),
         }));
     },

@@ -7,6 +7,8 @@ import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad
 // Patch PaymentScreen only
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
+        console.log("getNumpadButton called");
+        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -25,7 +27,6 @@ patch(PaymentScreen.prototype, {
 
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
-        // Inject custom click handler
         return buttons.map((button) => ({
             ...button,
             class: `${colorClassMap[button.value] || ""}`,

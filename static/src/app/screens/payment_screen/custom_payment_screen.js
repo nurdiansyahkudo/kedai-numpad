@@ -3,9 +3,13 @@
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
+import { useService } from "@web/core/utils/hooks";
 
+// 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
+        console.log("getNumpadButton called");
+        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -19,25 +23,21 @@ patch(PaymentScreen.prototype, {
             { value: "10000", text: "10.000" },
             { value: "20000", text: "20.000" },
             { value: "50000", text: "50.000" },
-            { value: "Backspace", text: "←" },
+            NumpadComp.BACKSPACE,
         ];
 
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
-        return buttons.map((button) => {
-            const value = typeof button === "object" ? button.value : button;
-            const text = typeof button === "object" ? button.text : button;
-
-            return {
-                value,
-                text,
-                class: colorClassMap[value] || "",
-                onClick: () => this.onNumpadClick(value),
-            };
-        });
+        return buttons.map((button) => ({
+            ...button,
+            class: `${colorClassMap[button.value] || ""}`,
+        }));
     },
 
+    // 2. Tangani klik tombol nominal di PaymentScreen secara khusus
     onNumpadClick(buttonValue) {
+        console.log("Clicked button:", buttonValue);
+        
         const isNominal = ["10000", "20000", "50000"].includes(buttonValue);
         const order = this.pos.get_order();
 
@@ -55,6 +55,7 @@ patch(PaymentScreen.prototype, {
                 }
             }
         } else {
+            // Default handler untuk Backspace, -, dan .
             this.numberBuffer.sendKey(buttonValue);
         }
     },

@@ -3,13 +3,10 @@
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
-import { useService } from "@web/core/utils/hooks";
 
-// 1. Tambahkan tombol nominal di PaymentScreen
+// Patch PaymentScreen only
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
-        console.log("getNumpadButton called");
-        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -28,16 +25,15 @@ patch(PaymentScreen.prototype, {
 
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
+        // Inject custom click handler
         return buttons.map((button) => ({
             ...button,
             class: `${colorClassMap[button.value] || ""}`,
+            onClick: () => this.onNumpadClick(button.value),
         }));
     },
 
-    // 2. Tangani klik tombol nominal di PaymentScreen secara khusus
     onNumpadClick(buttonValue) {
-        console.log("Clicked button:", buttonValue);
-        
         const isNominal = ["10000", "20000", "50000"].includes(buttonValue);
         const order = this.pos.get_order();
 
@@ -55,7 +51,6 @@ patch(PaymentScreen.prototype, {
                 }
             }
         } else {
-            // Default handler untuk Backspace, -, dan .
             this.numberBuffer.sendKey(buttonValue);
         }
     },

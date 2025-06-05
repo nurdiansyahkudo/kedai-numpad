@@ -2,14 +2,27 @@
 
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import { Numpad } from "@point_of_sale/app/generic_components/numpad/numpad";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
-import { useService } from "@web/core/utils/hooks";
 
-// 1. Tambahkan tombol nominal di PaymentScreen
+// Step 1: Patch Numpad to support external onClick handler
+patch(Numpad.prototype, {
+    setup() {
+        super.setup();
+        this.originalOnClick = this.onClick;
+        this.onClick = (buttonValue) => {
+            if (this.props.onClick) {
+                this.props.onClick(buttonValue);
+            } else {
+                this.originalOnClick(buttonValue);
+            }
+        };
+    },
+});
+
+// Step 2: Patch PaymentScreen to add nominal buttons and custom onClick handler
 patch(PaymentScreen.prototype, {
     getNumpadButtons() {
-        console.log("getNumpadButton called");
-        
         const colorClassMap = {
             "10000": "o_colorlist_item_color_transparent_10",
             "20000": "o_colorlist_item_color_transparent_10",
@@ -34,10 +47,8 @@ patch(PaymentScreen.prototype, {
         }));
     },
 
-    // 2. Tangani klik tombol nominal di PaymentScreen secara khusus
     onNumpadClick(buttonValue) {
         console.log("Clicked button:", buttonValue);
-        
         const isNominal = ["10000", "20000", "50000"].includes(buttonValue);
         const order = this.pos.get_order();
 
@@ -49,14 +60,29 @@ patch(PaymentScreen.prototype, {
                 const newAmount = currentAmount + increment;
                 paymentLine.set_amount(newAmount);
                 this.numberBuffer.set(newAmount.toString());
-
                 if (typeof this.updateSelectedPaymentline === "function") {
                     this.updateSelectedPaymentline(newAmount);
                 }
             }
         } else {
-            // Default handler untuk Backspace, -, dan .
             this.numberBuffer.sendKey(buttonValue);
         }
+    },
+
+    // Step 3: Override render Numpad to use custom onClick
+    render() {
+        const vnode = super.render();
+        if (vnode && vnode.children) {
+            const numpadVNode = vnode.children.find(
+                (v) => v.type && v.type.__name__ === "Numpad"
+            );
+            if (numpadVNode) {
+                numpadVNode.props = {
+                    ...numpadVNode.props,
+                    onClick: this.onNumpadClick.bind(this),
+                };
+            }
+        }
+        return vnode;
     },
 });

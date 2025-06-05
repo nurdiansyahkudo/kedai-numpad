@@ -24,11 +24,17 @@ patch(PaymentScreen.prototype, {
 
         const buttons = NumpadComp.getButtons(NumpadComp.DEFAULT_LAST_ROW, customRightColumn);
 
-        return buttons.map((button) => ({
-            ...button,
-            class: colorClassMap[button.value] || "",
-            onClick: () => this.onNumpadClick(button.value),
-        }));
+        return buttons.map((button) => {
+            const value = typeof button === "object" ? button.value : button;
+            const text = typeof button === "object" ? button.text : button;
+
+            return {
+                value,
+                text,
+                class: colorClassMap[value] || "",
+                onClick: () => this.onNumpadClick(value),
+            };
+        });
     },
 
     onNumpadClick(buttonValue) {

@@ -16,10 +16,11 @@ patch(PaymentScreen.prototype, {
             numpadVisible: true,
         };
 
-        this.updateNumpadVisible();
+        onWillUpdateProps(() => {
+            this.updateNumpadVisible();
+        });
 
-        // tambahkan event listener
-        this.pos.get_order().on('change', this, this.updateNumpadVisible);
+        this.updateNumpadVisible();
     },
 
     updateNumpadVisible() {

@@ -1,23 +1,21 @@
 /** @odoo-module **/
 
-import { patch } from "@web/core/utils/patch";
+import { registry } from "@web/core/registry";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
-import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 import { usePos } from "@point_of_sale/app/store/pos_hook";
-import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
+import { useState, onWillUpdateProps } from "@odoo/owl";
+import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 
-// 1. Tambahkan tombol nominal di PaymentScreen
-patch(PaymentScreen.prototype, {
+export class CustomPaymentScreen extends PaymentScreen {
     setup() {
         super.setup();
-
-        this.state = useState({ numpadVisible: true });
         this.pos = usePos();
+        this.state = useState({ numpadVisible: true });
 
         onWillUpdateProps(() => {
             this.updateNumpadVisible();
         });
-    },
+    }
 
     updateNumpadVisible() {
         const line = this.selectedPaymentLine;
@@ -26,7 +24,7 @@ patch(PaymentScreen.prototype, {
             return;
         }
         this.state.numpadVisible = (line.payment_method.name !== "QRIS");
-    },
+    }
 
     getNumpadButtons() {
         console.log("getNumpadButton called");
@@ -53,5 +51,7 @@ patch(PaymentScreen.prototype, {
             ...button,
             class: `${colorClassMap[button.value] || ""}`,
         }));
-    },
-});
+    }
+}
+
+registry.category("pos_screens").add("PaymentScreen", CustomPaymentScreen);

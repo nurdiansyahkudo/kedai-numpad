@@ -9,13 +9,26 @@ import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 patch(PaymentScreen.prototype, {
     setup() {
         super.setup();
-        // langsung definisikan state manual
-        this.state.numpadVisible = true;
+
+        // clone state existing, tambahkan property baru
+        this.state = {
+            ...this.state,
+            numpadVisible: true,
+        };
 
         this.updateNumpadVisible();
 
-        // karena selectedPaymentLine bukan props, kita panggil handler manual ketika payment line berubah
+        // tambahkan event listener
         this.env.pos.get_order().on('change', this, this.updateNumpadVisible);
+    },
+
+    updateNumpadVisible() {
+        const line = this.selectedPaymentLine;
+        if (!line || !line.payment_method) {
+            this.state.numpadVisible = true;
+            return;
+        }
+        this.state.numpadVisible = (line.payment_method.name !== "QRIS");
     },
 
     getNumpadButtons() {
@@ -43,14 +56,5 @@ patch(PaymentScreen.prototype, {
             ...button,
             class: `${colorClassMap[button.value] || ""}`,
         }));
-    },
-
-    updateNumpadVisible() {
-        const line = this.selectedPaymentLine;
-        if (!line || !line.payment_method) {
-            this.state.numpadVisible = true;
-            return;
-        }
-        this.state.numpadVisible = (line.payment_method.name !== "QRIS");
     },
 });

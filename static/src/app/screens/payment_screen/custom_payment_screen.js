@@ -33,4 +33,9 @@ patch(PaymentScreen.prototype, {
             class: `${colorClassMap[button.value] || ""}`,
         }));
     },
+
+    get numpadVisible() {
+        if (!this.selectedPaymentLine) return true;
+        return this.selectedPaymentLine.payment_method.name !== "QRIS";
+    }
 });

@@ -7,6 +7,18 @@ import { useService } from "@web/core/utils/hooks";
 
 // 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
+    setup() {
+        super.setup();
+        // create local state
+        this.state = useState({
+            numpadVisible: true,
+        });
+
+        useEffect(() => {
+            this.updateNumpadVisible();
+        }, () => [this.selectedPaymentLine]);
+    },
+
     getNumpadButtons() {
         console.log("getNumpadButton called");
         
@@ -34,11 +46,12 @@ patch(PaymentScreen.prototype, {
         }));
     },
 
-    get numpadVisible() {
-        const line = this.env.pos.get_order().selected_paymentline;
+    updateNumpadVisible() {
+        const line = this.selectedPaymentLine;
         if (!line || !line.payment_method) {
-            return true;
+            this.state.numpadVisible = true;
+            return;
         }
-        return line.payment_method.name !== "QRIS";
+        this.state.numpadVisible = (line.payment_method.name !== "QRIS");
     },
 });

@@ -6,22 +6,21 @@ import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad
 import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 
 patch(PaymentScreen.prototype, {
-    setup() {
-        super.setup();
-        // tambahkan state tambahan jika mau
-    },
+    // setup() {
+    //     super.setup();
+    // },
 
-    get isNumpadVisible() {
-        const paymentLine = this.selectedPaymentLine;
-        if (!paymentLine) {
-            return false;
-        }
-        const method = paymentLine.payment_method;
-        if (!method) {
-            return true;
-        }
-        return method.name != 'QRIS';
-    },
+    // get isNumpadVisible() {
+    //     const paymentLine = this.selectedPaymentLine;
+    //     if (!paymentLine) {
+    //         return false;
+    //     }
+    //     const method = paymentLine.payment_method;
+    //     if (!method) {
+    //         return true;
+    //     }
+    //     return method.name != 'QRIS';
+    // },
 
     getNumpadButtons() {
         console.log("getNumpadButton called");

@@ -7,31 +7,6 @@ import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 
 // 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
-    setup() {
-        super.setup();
-
-        // clone state existing, tambahkan property baru
-        this.state = {
-            ...this.state,
-            numpadVisible: true,
-        };
-
-        onWillUpdateProps(() => {
-            this.updateNumpadVisible();
-        });
-
-        this.updateNumpadVisible();
-    },
-
-    updateNumpadVisible() {
-        const line = this.selectedPaymentLine;
-        if (!line || !line.payment_method) {
-            this.state.numpadVisible = true;
-            return;
-        }
-        this.state.numpadVisible = (line.payment_method.name !== "QRIS");
-    },
-
     getNumpadButtons() {
         console.log("getNumpadButton called");
         

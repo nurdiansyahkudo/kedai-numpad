@@ -34,13 +34,11 @@ patch(PaymentScreen.prototype, {
         }));
     },
 
-    // get numpadVisible() {
-    //     if (!this.selectedPaymentLine) {
-    //         return true;  // default: tampilkan numpad
-    //     }
-    //     if (!this.selectedPaymentLine.payment_method) {
-    //         return true;  // default: tampilkan numpad
-    //     }
-    //     return this.selectedPaymentLine.payment_method.name !== "QRIS";
-    // },
+    get numpadVisible() {
+        const line = this.selectedPaymentLine;
+        if (!line || !line.payment_method) {
+            return true;
+        }
+        return line.payment_method.name !== "QRIS";
+    },
 });

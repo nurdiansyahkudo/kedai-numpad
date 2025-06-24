@@ -3,6 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 
 // 1. Tambahkan tombol nominal di PaymentScreen
@@ -10,16 +11,12 @@ patch(PaymentScreen.prototype, {
     setup() {
         super.setup();
 
-        // clone state existing, tambahkan property baru
-        this.state = {
-            ...this.state,
-            numpadVisible: true,
-        };
+        this.state = useState({ numpadVisible: true });
+        this.pos = usePos();
 
-        this.updateNumpadVisible();
-
-        // tambahkan event listener
-        this.env.pos.get_order().on('change', this, this.updateNumpadVisible);
+        onWillUpdateProps(() => {
+            this.updateNumpadVisible();
+        });
     },
 
     updateNumpadVisible() {

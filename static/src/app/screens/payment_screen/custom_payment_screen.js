@@ -5,8 +5,18 @@ import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
 import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 
-// 1. Tambahkan tombol nominal di PaymentScreen
+// Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
+    get showNumpad() {
+        const order = this.pos.get_order();
+        const selectedPaymentLine = order.selected_paymentline;
+        if (!selectedPaymentLine) {
+            return true;  // default tampilkan numpad
+        }
+        // Ganti sesuai nama payment method QRIS kamu
+        return selectedPaymentLine.payment_method.name !== "QRIS";
+    },
+
     getNumpadButtons() {
         console.log("getNumpadButton called");
         

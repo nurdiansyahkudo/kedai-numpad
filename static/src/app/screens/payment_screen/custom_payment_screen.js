@@ -9,14 +9,13 @@ import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 patch(PaymentScreen.prototype, {
     setup() {
         super.setup();
-        // create local state
-        this.state = useState({
-            numpadVisible: true,
-        });
+        // langsung definisikan state manual
+        this.state.numpadVisible = true;
 
-        onWillUpdateProps(() => {
-            this.updateNumpadVisible();
-        });
+        this.updateNumpadVisible();
+
+        // karena selectedPaymentLine bukan props, kita panggil handler manual ketika payment line berubah
+        this.env.pos.get_order().on('change', this, this.updateNumpadVisible);
     },
 
     getNumpadButtons() {

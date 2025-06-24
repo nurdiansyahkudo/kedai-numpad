@@ -8,6 +8,8 @@ import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 // Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
     get showNumpad() {
+        console.log("showNumpad called");
+
         const order = this.pos.get_order();
         const selectedPaymentLine = order.selected_paymentline;
         if (!selectedPaymentLine) {

@@ -35,7 +35,7 @@ patch(PaymentScreen.prototype, {
     },
 
     get numpadVisible() {
-        const line = this.selectedPaymentLine;
+        const line = this.env.pos.get_order().selected_paymentline;
         if (!line || !line.payment_method) {
             return true;
         }

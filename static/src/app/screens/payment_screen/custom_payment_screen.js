@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
 
 // 1. Tambahkan tombol nominal di PaymentScreen
 patch(PaymentScreen.prototype, {
@@ -14,9 +14,9 @@ patch(PaymentScreen.prototype, {
             numpadVisible: true,
         });
 
-        useEffect(() => {
+        onWillUpdateProps(() => {
             this.updateNumpadVisible();
-        }, () => [this.selectedPaymentLine]);
+        });
     },
 
     getNumpadButtons() {

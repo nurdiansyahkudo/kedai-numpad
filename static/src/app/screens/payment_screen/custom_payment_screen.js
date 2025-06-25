@@ -11,7 +11,7 @@ patch(PaymentScreen.prototype, {
         this.state = useState({ showNumpad: true });
     },
 
-    async addNewPaymentLine() {
+    async addNewPaymentLine(paymentMethod) {
         this.state.showNumpad = paymentMethod.name !== "QRIS";
 
         return await super.addNewPaymentLine(paymentMethod);

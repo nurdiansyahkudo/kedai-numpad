@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve" inherit_id="point_of_sale.PaymentScreen" priority="99">
 
-    <xpath expr="//Numpad[@buttons='getNumpadButtons()']" position="replace">
+    <xpath expr="//Numpad" position="replace">
         <Numpad 
             t-if="state.showNumpad"
             class="'py-2'" 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve" inherit_id="point_of_sale.PaymentScreen" priority="99">
+<templates xml:space="preserve" inherit_id="point_of_sale.PaymentScreen" priority="100">
 
     <xpath expr="//Numpad" position="replace">
         <Numpad 

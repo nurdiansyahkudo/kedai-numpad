@@ -10,9 +10,9 @@
             "kedai_numpad/static/src/app/screens/payment_screen/custom_payment_screen.js",
             "kedai_numpad/static/src/app/generic_components/numpad/custom_numpad.js",
         ],
-        "point_of_sale.assets": [
-            "kedai_numpad/static/src/app/screens/payment_screen/custom_payment_screen.xml",
-        ],
+        # "point_of_sale.assets": [
+        #     "kedai_numpad/static/src/app/screens/payment_screen/custom_payment_screen.xml",
+        # ],
     },
     "installable": True,
     "application": False,

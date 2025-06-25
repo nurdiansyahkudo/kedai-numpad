@@ -3,24 +3,19 @@
 import { patch } from "@web/core/utils/patch";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import * as NumpadComp from "@point_of_sale/app/generic_components/numpad/numpad";
-import { useService, useState, onWillUpdateProps } from "@web/core/utils/hooks";
+import { useState } from "@odoo/owl";
 
 patch(PaymentScreen.prototype, {
-    // setup() {
-    //     super.setup();
-    // },
+    setup() {
+        super.setup();
+        this.state = useState({ showNumpad: true });
+    },
 
-    // get isNumpadVisible() {
-    //     const paymentLine = this.selectedPaymentLine;
-    //     if (!paymentLine) {
-    //         return false;
-    //     }
-    //     const method = paymentLine.payment_method;
-    //     if (!method) {
-    //         return true;
-    //     }
-    //     return method.name != 'QRIS';
-    // },
+    async addNewPaymentLine() {
+        this.state.showNumpad = paymentMethod.name !== "QRIS";
+
+        return await super.addNewPaymentLine(paymentMethod);
+    },
 
     getNumpadButtons() {
         console.log("getNumpadButton called");
